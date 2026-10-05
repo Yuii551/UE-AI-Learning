@@ -1,0 +1,53 @@
+# Unreal Engine generated directories
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Visual Studio
+.vs/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Build products
+*.pdb
+*.obj
+*.dll
+*.exe
+*.exp
+*.lib
+*.ilk
+*.iobj
+*.ipdb
+
+# Unreal crash and profiling output
+crashinfo--*
+*.log
+*.dmp
+*.ue4stats
+*.uestats
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
