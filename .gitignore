@@ -14,6 +14,7 @@ Saved/
 *.opensdf
 *.VC.db
 *.VC.opendb
+*.slnx
 
 # Visual Studio Code
 .vscode/
