@@ -13,18 +13,6 @@ AGuardCharacter::AGuardCharacter()
 		CreateDefaultSubobject<UPatrolComponent>(TEXT("PatrolComponent"));
 }
 
-void AGuardCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void AGuardCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
 UPatrolComponent* AGuardCharacter::GetPatrolComponent() const
 {
 	return PatrolComponent;

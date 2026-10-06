@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "GuardCharacter.generated.h"
 
+class UPatrolComponent;
+
 UCLASS()
 class SENTINELLAB_API AGuardCharacter : public ACharacter
 {
@@ -13,13 +15,9 @@ class SENTINELLAB_API AGuardCharacter : public ACharacter
 
 public:
 	AGuardCharacter();
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintPure, Category = "Patrol")
 	UPatrolComponent* GetPatrolComponent() const;
-
-protected:
-	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Patrol")

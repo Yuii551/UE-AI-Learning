@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Patrol")
 	ATargetPoint* AdvancePatrolPoint();
 
+	UFUNCTION(BlueprintCallable, Category = "Patrol")
+	ATargetPoint* FindValidPatrolPoint();
+
 private:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Patrol", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<APatrolRoute> PatrolRoute;

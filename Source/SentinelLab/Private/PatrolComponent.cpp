@@ -52,3 +52,15 @@ ATargetPoint* UPatrolComponent::AdvancePatrolPoint()
 
 	return nullptr;
 }
+
+ATargetPoint* UPatrolComponent::FindValidPatrolPoint()
+{
+	ATargetPoint* CurrentPoint = GetCurrentPatrolPoint();
+
+	if (IsValid(CurrentPoint))
+	{
+		return CurrentPoint;
+	}
+
+	return AdvancePatrolPoint();
+}
