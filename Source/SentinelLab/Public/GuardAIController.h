@@ -10,6 +10,7 @@
 class UBehaviorTree;
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
+class UAISenseConfig_Hearing;
 
 UCLASS()
 class SENTINELLAB_API AGuardAIController : public AAIController
@@ -33,6 +34,10 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "AI|Perception")
 	TObjectPtr<UAISenseConfig_Sight> SightConfig;
 
+	UPROPERTY(VisibleAnywhere, Category = "AI|Perception")
+	TObjectPtr<UAISenseConfig_Hearing> HearingConfig;
+
 	UFUNCTION()
 	void HandleTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
+	
 };

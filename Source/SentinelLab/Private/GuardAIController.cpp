@@ -9,6 +9,8 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISense_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AISense_Hearing.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 AGuardAIController::AGuardAIController()
@@ -31,6 +33,16 @@ AGuardAIController::AGuardAIController()
 
 	GuardPerception->ConfigureSense(*SightConfig);
 	GuardPerception->SetDominantSense(UAISense_Sight::StaticClass());
+
+	HearingConfig =
+		CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
+
+	HearingConfig->HearingRange = 2000.0f;
+	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
+	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+	GuardPerception->ConfigureSense(*HearingConfig);
 }
 
 void AGuardAIController::OnPossess(APawn* InPawn)
@@ -89,6 +101,53 @@ void AGuardAIController::BeginPlay()
 
 void AGuardAIController::HandleTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
+	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+	{
+		if (!Stimulus.WasSuccessfullySensed())
+		{
+			return;
+		}
+
+		UBlackboardComponent* BlackboardComp = GetBlackboardComponent();
+
+		if (!IsValid(BlackboardComp))
+		{
+			return;
+		}
+
+		const bool bHasSight =
+			BlackboardComp->GetValueAsBool(TEXT("HasLineOfSight"));
+
+		const bool bHasPlayerMemory =
+			BlackboardComp->GetValueAsBool(TEXT("HasLastKnownTargetLocation"));
+
+		if (bHasSight || bHasPlayerMemory)
+		{
+			return;
+		}
+
+		BlackboardComp->SetValueAsVector(
+			TEXT("InvestigationLocation"),
+			Stimulus.StimulusLocation
+		);
+
+		BlackboardComp->SetValueAsBool(
+			TEXT("HasInvestigationLocation"),
+			true
+		);
+		
+		UE_LOG(
+			LogTemp,
+			Log,
+			TEXT("%s accepted noise from %s at %s"),
+			*GetName(),
+			*GetNameSafe(Actor),
+			*Stimulus.StimulusLocation.ToString()
+		);
+
+		return;
+	}
+	
 	if (Stimulus.Type != UAISense::GetSenseID<UAISense_Sight>())
 	{
 		return;
@@ -132,12 +191,24 @@ void AGuardAIController::HandleTargetPerceptionUpdated(AActor* Actor, FAIStimulu
 
 	if (Stimulus.WasSuccessfullySensed())
 	{
-		BlackboardComp->SetValueAsObject(TEXT("TargetActor"), SensedPawn);
+		BlackboardComp->SetValueAsObject(
+			TEXT("TargetActor"), 
+			SensedPawn
+		);
+		
 		BlackboardComp->SetValueAsVector(
 			TEXT("LastKnownTargetLocation"),
 			Stimulus.StimulusLocation);
 
-		BlackboardComp->SetValueAsBool(TEXT("HasLineOfSight"), true);
+		BlackboardComp->SetValueAsBool(
+			TEXT("HasLastKnownTargetLocation"),
+			true
+		);
+		
+		BlackboardComp->SetValueAsBool(
+			TEXT("HasLineOfSight"), 
+			true
+		);
 	}
 	else
 	{
