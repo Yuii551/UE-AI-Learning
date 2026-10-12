@@ -46,6 +46,9 @@ crashinfo--*
 Thumbs.db
 Desktop.ini
 
+# Personal development notes
+docs/PROGRESS.md
+
 # Temporary files
 *.tmp
 *.temp

@@ -20,6 +20,7 @@ EBTNodeResult::Type UBTTask_ClearTargetMemory::ExecuteTask(UBehaviorTreeComponen
 	}
 
 	BlackboardComp->ClearValue(TEXT("TargetActor"));
+	BlackboardComp->ClearValue(TEXT("SearchLocation"));
 	BlackboardComp->ClearValue(TEXT("LastKnownTargetLocation"));
 	BlackboardComp->SetValueAsBool(
 		TEXT("HasLastKnownTargetLocation"),
